@@ -1,0 +1,172 @@
+  componentDidMount() {
+    // If logged in and user navigates to Register page, should redirect them to dashboard
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push("/dashboard");
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({
+        errors: nextProps.errors
+      });
+    }
+  }
+
+
+import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import classnames from "classnames";
+import { registerUser } from "../../actions/authActions";
+import Modal from '../Modal';
+
+
+class Register extends Component {
+  constructor() {
+    super();
+    this.state = {
+      name: "",
+      email: "",
+      password: "",
+      password2: "",
+      errors: {},
+      modalIsOpen: false
+    };
+  }
+
+  componentDidMount() {
+    // If logged in and user navigates to Register page, should redirect them to dashboard
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push("/dashboard");
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({
+        errors: nextProps.errors
+      });
+    }
+  }
+  
+  onChange = e => {
+    this.setState({ [e.target.id]: e.target.value });
+  };
+
+  onSubmit = e => {
+    e.preventDefault();
+
+    const newUser = {
+      name: this.state.name,
+      email: this.state.email,
+      password: this.state.password,
+      password2: this.state.password2
+    };
+
+    console.log(newUser);
+    this.props.registerUser(newUser, this.props.history); 
+  };
+
+  render() {
+    const { errors } = this.state;
+    return (
+      <div className="text-center">
+        <div className="container px-3 py-5">
+          <div className="row px-5">
+            <div className="mx-auto col-lg-6 col-10">
+              <h1>Raffler</h1>
+              <p className="mb-3">래플러와 함께 스니커 응모 정보 및 발매 정보를 손쉽게 알아보세요!</p>
+              <form className="text-left" noValidate onSubmit={this.onSubmit}>
+                <div className="form-group">
+                  <label htmlFor="email">이메일 주소</label>
+                  <span className="red-text">{errors.email}</span>
+                  <input
+                    onChange={this.onChange}
+                    value={this.state.email}
+                    error={errors.email}
+                    placeholder="로그인 시 사용 이메일 주소       예)abc123@raffler.com"
+                    className={classnames("form-control", {
+                      invalid: errors.email
+                    })}
+                    id="email"
+                    type="email"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="name">닉네임</label>
+                  <span className="red-text">{errors.name}</span>
+                  <input
+                    onChange={this.onChange}
+                    value={this.state.name}
+                    error={errors.name}
+                    placeholder="사이트내 활동 닉네임"                    
+                    className={classnames("form-control", {
+                      invalid: errors.name
+                    })}
+                    id="name"
+                    type="text"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="password">비밀번호.</label>
+                  <span className="red-text">{errors.password}</span>
+                  <input
+                    onChange={this.onChange}
+                    value={this.state.password}
+                    error={errors.password}
+                    placeholder="6~15자 이내 영문,숫자,특수문자 두가지 이상 혼합하여 기입해주세요."
+                    className={classnames("form-control", {
+                      invalid: errors.password
+                    })}
+                    id="password"
+                    type="password"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="password2">비밀번호 확인</label>
+                  <span className="red-text">{errors.password2}</span>
+                  <input
+                    onChange={this.onChange}
+                    value={this.state.password2}
+                    error={errors.password2}
+                    placeholder="**********"
+                    className={classnames("form-control", {
+                      invalid: errors.password2
+                    })}
+                    id="password2"
+                    type="password"
+                  />
+                </div>
+                <div className="form-group">
+                  <p>가입하기를 누르시면 약관에 동의하며,
+                    <a data-toggle="modal" href="#myModal"> 개인정보 취급방침</a>을 동의 하시는 것으로 간주됩니다.
+                  </p>
+                </div>
+                <button type="submit" className="btn btn-primary">가입하기</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <Modal />
+      </div>
+    );
+  }
+}
+
+Register.propTypes = {
+  registerUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
+export default connect(
+  mapStateToProps,
+  { registerUser }
+)(withRouter(Register));

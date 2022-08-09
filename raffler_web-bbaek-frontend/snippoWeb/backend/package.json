@@ -1,0 +1,49 @@
+{
+  "name": "raffler",
+  "version": "1.0.0",
+  "description": "Raffer web app",
+  "main": "app.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=production PORT=80 pm2 start app.js",
+    "server": "cross-env NODE_ENV=development nodemon app.js",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "author": "Dae",
+  "license": "ISC",
+  "dependencies": {
+    "antd": "^3.22.0",
+    "aws-sdk": "^2.610.0",
+    "axios": "^0.19.0",
+    "bcrypt": "3.0.6",
+    "body-parser": "^1.19.0",
+    "concurrently": "^5.0.1",
+    "cors": "^2.8.5",
+    "cross-env": "^6.0.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "firebase": "^7.7.0",
+    "firebase-admin": "^8.9.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.6.8",
+    "multer": "^1.4.2",
+    "multer-s3": "^2.9.0",
+    "next": "^9.0.5",
+    "next-redux-wrapper": "^3.0.0",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "pm2": "^3.5.2",
+    "prop-types": "^15.7.2",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-redux": "^7.1.1",
+    "redux-saga": "^1.0.5"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  },
+  "proxy": "http://localhost:2000/",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/username/repository.git"
+  }
+}
